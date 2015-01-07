@@ -21,7 +21,7 @@ WITH_UDP_CLIENT_AUTOSTART?=1
 
 # Platform specific
 
-CC2538DK_FW=bin
+CC2538DK_FW=hex
 
 # End of user configuration section
 
@@ -66,7 +66,8 @@ endif
 
 ifneq ($(WITH_WEBSERVER),0)
 CFLAGS += -DWEBSERVER=1
-PROJECT_SOURCEFILES += sky-websense.c httpd-simple.c
+#PROJECT_SOURCEFILES += sky-websense.c httpd-simple.c
+PROJECT_SOURCEFILES += httpd-simple.c
 endif
 
 ifneq ($(WITH_COAPSERVER),0)
