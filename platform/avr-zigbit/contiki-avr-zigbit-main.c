@@ -72,7 +72,7 @@
 #include "dev/serial-line.h"
 #include "dev/slip.h"
 
-#include "sicslowmac.h"
+#include "net/mac/sicslowmac/sicslowmac.h"
 
 FUSES =
 	{
@@ -159,16 +159,21 @@ init_lowlevel(void)
 #if ANNOUNCE_BOOT
   printf_P(PSTR("Routing Enabled\n"));
 #endif
-  rime_init(rime_udp_init(NULL));
-  uip_router_register(&rimeroute);
+  
+#if CONTIKI_WITH_RIME  
+  rime_init();
+  // uip_router_register(&rimeroute);
+#endif 
 #endif
-
+#if NETSTACK_CONF_WITH_IPV6 || NETSTACK_CONF_WITH_IPV4
   process_start(&tcpip_process, NULL);
-
+#endif
 #else
 /* mac process must be started before tcpip process! */
   process_start(&mac_process, NULL);
+#if NETSTACK_CONF_WITH_IPV6 || NETSTACK_CONF_WITH_IPV4
   process_start(&tcpip_process, NULL);
+#endif
 #endif /*RF230BB*/
 
 }
